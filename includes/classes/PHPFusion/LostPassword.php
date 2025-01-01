@@ -114,7 +114,7 @@ class LostPassword extends PasswordAuth {
         $mailbody = str_replace("[USER_NAME]", $this->userName, $mailbody);
         $mailbody = str_replace("[SITEUSERNAME]", $settings['siteusername'], $mailbody);
         sendemail($this->userName, $this->userEmail, $settings['siteusername'], $settings['siteemail'], $locale['409'].$settings['sitename'], $mailbody);
-        dbquery("UPDATE ".DB_USERS." SET user_algo='".fusion_get_settings('password_algorithm')."', user_password='".$this->getNewHash()."', user_salt='".$this->getNewSalt()."' WHERE user_email='".$this->userEmail."'");
+        dbquery("UPDATE ".DB_USERS." SET user_algo='sha256', user_password='".$this->getNewHash()."', user_salt='".$this->getNewSalt()."' WHERE user_email='".$this->userEmail."'"); //Funkcion ".fusion_get_settings('password_algorithm')." not work... write MD5 to the database.... write sha256 password and write also=md5 BUG! NOW work.... easy FIX!     
         $this->html .= "<div class='text-center'>".$locale['402']."<br /><br />\n<a href='".BASEDIR."index.php'>".$locale['403']."</a></div>\n";
     }
 
